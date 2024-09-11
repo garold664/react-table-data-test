@@ -8,11 +8,24 @@ import {
   TableRow,
 } from './ui/table';
 
-import React from 'react';
-
 import data from '../data.json';
+import { useState } from 'react';
 
 export default function ProductsTable() {
+  const [tableData, setTableData] = useState(data);
+
+  const availableTotal = tableData.reduce(
+    (acc, value) => acc + +value.available,
+    0
+  );
+
+  const inTransitTotal = tableData.reduce(
+    (acc, value) => acc + +value.inTransit,
+    0
+  );
+
+  const total = tableData.reduce((acc, value) => acc + +value.total, 0);
+
   return (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
@@ -30,26 +43,25 @@ export default function ProductsTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((item) => (
+        {tableData.map((item) => (
           <TableRow key={item.barcode}>
-            <TableCell className="font-medium">{item.barcode}</TableCell>
+            <TableCell>{item.barcode}</TableCell>
             <TableCell>{item.type}</TableCell>
             <TableCell>{item.name}</TableCell>
-            <TableCell className="text-right">{item.size}</TableCell>
-            <TableCell className="text-right">{item.available}</TableCell>
-            <TableCell className="text-right">{item.inTransit}</TableCell>
-            <TableCell className="text-right">{item.total}</TableCell>
+            <TableCell>{item.size}</TableCell>
+            <TableCell>{item.available}</TableCell>
+            <TableCell>{item.inTransit}</TableCell>
+            <TableCell>{item.total}</TableCell>
           </TableRow>
         ))}
-        {/* <TableRow>
-          <TableCell className="font-medium">2037618545904</TableCell>
-          <TableCell>Одежда</TableCell>
-          <TableCell>Кардиган</TableCell>
-          <TableCell className="text-right">50-60</TableCell>
-          <TableCell className="text-right">0</TableCell>
-          <TableCell className="text-right">40</TableCell>
-          <TableCell className="text-right">30</TableCell>
-        </TableRow> */}
+        <TableRow>
+          <TableCell className="text-left" colSpan={4}>
+            Итого:
+          </TableCell>
+          <TableCell>{availableTotal}</TableCell>
+          <TableCell>{inTransitTotal} </TableCell>
+          <TableCell>{total}</TableCell>
+        </TableRow>
       </TableBody>
     </Table>
   );
