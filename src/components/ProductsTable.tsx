@@ -10,6 +10,7 @@ import {
 
 import data from '../data.json';
 import { useState } from 'react';
+import Item from './Item';
 
 export default function ProductsTable() {
   const [tableData, setTableData] = useState(data);
@@ -20,11 +21,28 @@ export default function ProductsTable() {
   );
 
   const inTransitTotal = tableData.reduce(
-    (acc, value) => acc + +value.inTransit,
+    (acc, value) => acc + value.inTransit,
     0
   );
 
   const total = tableData.reduce((acc, value) => acc + +value.total, 0);
+
+  const updateTableData = (
+    id: string,
+    field: string,
+    value: string | number
+  ) => {
+    setTableData((prev) => {
+      return prev.map((item) => {
+        if (item.barcode === id) {
+          return { ...item, [field]: value };
+        }
+        return item;
+      });
+    });
+  };
+
+  console.log(tableData);
 
   return (
     <Table>
@@ -45,13 +63,69 @@ export default function ProductsTable() {
       <TableBody>
         {tableData.map((item) => (
           <TableRow key={item.barcode}>
-            <TableCell>{item.barcode}</TableCell>
-            <TableCell>{item.type}</TableCell>
-            <TableCell>{item.name}</TableCell>
-            <TableCell>{item.size}</TableCell>
-            <TableCell>{item.available}</TableCell>
-            <TableCell>{item.inTransit}</TableCell>
-            <TableCell>{item.total}</TableCell>
+            <TableCell>
+              <Item
+                update={updateTableData}
+                field="barcode"
+                barcode={item.barcode}
+              >
+                {item.barcode}
+              </Item>
+            </TableCell>
+            <TableCell>
+              <Item
+                update={updateTableData}
+                field="type"
+                barcode={item.barcode}
+              >
+                {item.type}
+              </Item>
+            </TableCell>
+            <TableCell>
+              <Item
+                update={updateTableData}
+                field="name"
+                barcode={item.barcode}
+              >
+                {item.name}
+              </Item>
+            </TableCell>
+            <TableCell>
+              <Item
+                update={updateTableData}
+                field="size"
+                barcode={item.barcode}
+              >
+                {item.size}
+              </Item>
+            </TableCell>
+            <TableCell>
+              <Item
+                update={updateTableData}
+                field="available"
+                barcode={item.barcode}
+              >
+                {item.available}
+              </Item>
+            </TableCell>
+            <TableCell>
+              <Item
+                update={updateTableData}
+                field="inTransit"
+                barcode={item.barcode}
+              >
+                {item.inTransit}
+              </Item>
+            </TableCell>
+            <TableCell>
+              <Item
+                update={updateTableData}
+                field="total"
+                barcode={item.barcode}
+              >
+                {item.total}
+              </Item>
+            </TableCell>
           </TableRow>
         ))}
         <TableRow>

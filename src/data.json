@@ -4,62 +4,62 @@
     "type": "Одежда",
     "name": "Кардиган",
     "size": "50-60",
-    "available": "0",
-    "inTransit": "40",
-    "total": "30"
+    "available": 0,
+    "inTransit": 40,
+    "total": 30
   },
   {
     "barcode": "3948271356789",
     "type": "Одежда",
     "name": "Брюки",
     "size": "48",
-    "available": "6",
-    "inTransit": "10",
-    "total": "20"
+    "available": 6,
+    "inTransit": 10,
+    "total": 20
   },
   {
     "barcode": "1839420678234",
     "type": "Одежда",
     "name": "Рубашка",
     "size": "54",
-    "available": "12",
-    "inTransit": "5",
-    "total": "40"
+    "available": 12,
+    "inTransit": 5,
+    "total": 40
   },
   {
     "barcode": "9827341567890",
     "type": "Одежда",
     "name": "Джинсы",
     "size": "36",
-    "available": "3",
-    "inTransit": "23",
-    "total": "25"
+    "available": 3,
+    "inTransit": 23,
+    "total": 25
   },
   {
     "barcode": "4759821345678",
     "type": "Одежда",
     "name": "Шорты",
     "size": "52",
-    "available": "24",
-    "inTransit": "11",
-    "total": "10"
+    "available": 24,
+    "inTransit": 11,
+    "total": 10
   },
   {
     "barcode": "2198765432109",
     "type": "Одежда",
     "name": "Брюки",
     "size": "50-60",
-    "available": "0",
-    "inTransit": "5",
-    "total": "3"
+    "available": 0,
+    "inTransit": 5,
+    "total": 3
   },
   {
     "barcode": "6589231478523",
     "type": "Одежда",
     "name": "Кардиган",
     "size": "50-54",
-    "available": "2",
-    "inTransit": "45",
-    "total": "15"
+    "available": 2,
+    "inTransit": 45,
+    "total": 15
   }
 ]
