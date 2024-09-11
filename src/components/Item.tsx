@@ -4,10 +4,19 @@ import { useEffect, useRef, useState } from 'react';
 interface ItemProps {
   children: string | number;
   update: (id: string, field: string, value: string | number) => void;
+  setEditedId: React.Dispatch<React.SetStateAction<string | null>>;
+  editedId: string | null;
   field: string;
   barcode: string;
 }
-export default function Item({ children, update, field, barcode }: ItemProps) {
+export default function Item({
+  children,
+  update,
+  setEditedId,
+  editedId,
+  field,
+  barcode,
+}: ItemProps) {
   const [isEdited, setIsEdited] = useState(false);
   const [value, setValue] = useState(children);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -19,7 +28,7 @@ export default function Item({ children, update, field, barcode }: ItemProps) {
   }, [isEdited]);
   return (
     <>
-      {isEdited ? (
+      {isEdited && editedId === barcode + field ? (
         <form
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
@@ -41,7 +50,14 @@ export default function Item({ children, update, field, barcode }: ItemProps) {
           </button>
         </form>
       ) : (
-        <div onDoubleClick={() => setIsEdited(true)}>{value}</div>
+        <div
+          onDoubleClick={() => {
+            setEditedId(barcode + field);
+            setIsEdited(true);
+          }}
+        >
+          {value}
+        </div>
       )}
     </>
   );

@@ -14,6 +14,7 @@ import Item from './Item';
 
 export default function ProductsTable() {
   const [tableData, setTableData] = useState(data);
+  const [editedId, setEditedId] = useState<string | null>(null);
 
   const availableTotal = tableData.reduce(
     (acc, value) => acc + +value.available,
@@ -66,6 +67,8 @@ export default function ProductsTable() {
             <TableCell>
               <Item
                 update={updateTableData}
+                setEditedId={setEditedId}
+                editedId={editedId}
                 field="barcode"
                 barcode={item.barcode}
               >
@@ -75,6 +78,8 @@ export default function ProductsTable() {
             <TableCell>
               <Item
                 update={updateTableData}
+                setEditedId={setEditedId}
+                editedId={editedId}
                 field="type"
                 barcode={item.barcode}
               >
@@ -84,6 +89,8 @@ export default function ProductsTable() {
             <TableCell>
               <Item
                 update={updateTableData}
+                setEditedId={setEditedId}
+                editedId={editedId}
                 field="name"
                 barcode={item.barcode}
               >
@@ -93,6 +100,8 @@ export default function ProductsTable() {
             <TableCell>
               <Item
                 update={updateTableData}
+                setEditedId={setEditedId}
+                editedId={editedId}
                 field="size"
                 barcode={item.barcode}
               >
@@ -102,6 +111,8 @@ export default function ProductsTable() {
             <TableCell>
               <Item
                 update={updateTableData}
+                setEditedId={setEditedId}
+                editedId={editedId}
                 field="available"
                 barcode={item.barcode}
               >
@@ -111,6 +122,8 @@ export default function ProductsTable() {
             <TableCell>
               <Item
                 update={updateTableData}
+                setEditedId={setEditedId}
+                editedId={editedId}
                 field="inTransit"
                 barcode={item.barcode}
               >
@@ -120,6 +133,8 @@ export default function ProductsTable() {
             <TableCell>
               <Item
                 update={updateTableData}
+                setEditedId={setEditedId}
+                editedId={editedId}
                 field="total"
                 barcode={item.barcode}
               >
