@@ -9,7 +9,7 @@ import {
 } from './ui/table';
 
 import data from '../data.json';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Item from './Item';
 
 export default function ProductsTable() {
@@ -28,22 +28,19 @@ export default function ProductsTable() {
 
   const total = tableData.reduce((acc, value) => acc + +value.total, 0);
 
-  const updateTableData = (
-    id: string,
-    field: string,
-    value: string | number
-  ) => {
-    setTableData((prev) => {
-      return prev.map((item) => {
-        if (item.barcode === id) {
-          return { ...item, [field]: value };
-        }
-        return item;
+  const updateTableData = useCallback(
+    (id: string, field: string, value: string | number) => {
+      setTableData((prev) => {
+        return prev.map((item) => {
+          if (item.barcode === id) {
+            return { ...item, [field]: value };
+          }
+          return item;
+        });
       });
-    });
-  };
-
-  console.log(tableData);
+    },
+    []
+  );
 
   return (
     <Table>
@@ -68,7 +65,7 @@ export default function ProductsTable() {
               <Item
                 update={updateTableData}
                 setEditedId={setEditedId}
-                editedId={editedId}
+                isEdited={editedId === item.barcode + 'barcode'}
                 field="barcode"
                 barcode={item.barcode}
               >
@@ -79,7 +76,7 @@ export default function ProductsTable() {
               <Item
                 update={updateTableData}
                 setEditedId={setEditedId}
-                editedId={editedId}
+                isEdited={editedId === item.barcode + 'type'}
                 field="type"
                 barcode={item.barcode}
               >
@@ -90,7 +87,7 @@ export default function ProductsTable() {
               <Item
                 update={updateTableData}
                 setEditedId={setEditedId}
-                editedId={editedId}
+                isEdited={editedId === item.barcode + 'name'}
                 field="name"
                 barcode={item.barcode}
               >
@@ -101,7 +98,7 @@ export default function ProductsTable() {
               <Item
                 update={updateTableData}
                 setEditedId={setEditedId}
-                editedId={editedId}
+                isEdited={editedId === item.barcode + 'size'}
                 field="size"
                 barcode={item.barcode}
               >
@@ -112,7 +109,7 @@ export default function ProductsTable() {
               <Item
                 update={updateTableData}
                 setEditedId={setEditedId}
-                editedId={editedId}
+                isEdited={editedId === item.barcode + 'available'}
                 field="available"
                 barcode={item.barcode}
               >
@@ -123,7 +120,7 @@ export default function ProductsTable() {
               <Item
                 update={updateTableData}
                 setEditedId={setEditedId}
-                editedId={editedId}
+                isEdited={editedId === item.barcode + 'inTransit'}
                 field="inTransit"
                 barcode={item.barcode}
               >
@@ -134,7 +131,7 @@ export default function ProductsTable() {
               <Item
                 update={updateTableData}
                 setEditedId={setEditedId}
-                editedId={editedId}
+                isEdited={editedId === item.barcode + 'total'}
                 field="total"
                 barcode={item.barcode}
               >
