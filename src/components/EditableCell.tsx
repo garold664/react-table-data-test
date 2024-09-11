@@ -10,7 +10,7 @@ interface ItemProps {
   field: string;
   barcode: string;
 }
-const Item = memo(
+const EditableCell = memo(
   ({ children, update, setEditedId, isEdited, field, barcode }: ItemProps) => {
     const [isBeingEdited, setIsBeingEdited] = useState(false);
     const [value, setValue] = useState(children);
@@ -97,4 +97,4 @@ const Item = memo(
     );
   }
 );
-export default Item;
+export default EditableCell;

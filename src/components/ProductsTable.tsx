@@ -10,12 +10,11 @@ import {
 
 import data from '../data.json';
 import { useCallback, useState } from 'react';
-import Item from './Item';
+import EditableCell from './EditableCell';
 
 export default function ProductsTable() {
   const [tableData, setTableData] = useState(data);
   const [editedId, setEditedId] = useState<string | null>(null);
-  const [cellWidth, setCellWidth] = useState(0);
   const availableTotal = tableData.reduce(
     (acc, value) => acc + +value.available,
     0
@@ -61,7 +60,7 @@ export default function ProductsTable() {
       <TableBody>
         {tableData.map((item) => (
           <TableRow key={item.barcode}>
-            <Item
+            <EditableCell
               update={updateTableData}
               setEditedId={setEditedId}
               isEdited={editedId === item.barcode + 'barcode'}
@@ -69,9 +68,9 @@ export default function ProductsTable() {
               barcode={item.barcode}
             >
               {item.barcode}
-            </Item>
+            </EditableCell>
 
-            <Item
+            <EditableCell
               update={updateTableData}
               setEditedId={setEditedId}
               isEdited={editedId === item.barcode + 'type'}
@@ -79,9 +78,9 @@ export default function ProductsTable() {
               barcode={item.barcode}
             >
               {item.type}
-            </Item>
+            </EditableCell>
 
-            <Item
+            <EditableCell
               update={updateTableData}
               setEditedId={setEditedId}
               isEdited={editedId === item.barcode + 'name'}
@@ -89,9 +88,9 @@ export default function ProductsTable() {
               barcode={item.barcode}
             >
               {item.name}
-            </Item>
+            </EditableCell>
 
-            <Item
+            <EditableCell
               update={updateTableData}
               setEditedId={setEditedId}
               isEdited={editedId === item.barcode + 'size'}
@@ -99,9 +98,9 @@ export default function ProductsTable() {
               barcode={item.barcode}
             >
               {item.size}
-            </Item>
+            </EditableCell>
 
-            <Item
+            <EditableCell
               update={updateTableData}
               setEditedId={setEditedId}
               isEdited={editedId === item.barcode + 'available'}
@@ -109,9 +108,9 @@ export default function ProductsTable() {
               barcode={item.barcode}
             >
               {item.available}
-            </Item>
+            </EditableCell>
 
-            <Item
+            <EditableCell
               update={updateTableData}
               setEditedId={setEditedId}
               isEdited={editedId === item.barcode + 'inTransit'}
@@ -119,9 +118,9 @@ export default function ProductsTable() {
               barcode={item.barcode}
             >
               {item.inTransit}
-            </Item>
+            </EditableCell>
 
-            <Item
+            <EditableCell
               update={updateTableData}
               setEditedId={setEditedId}
               isEdited={editedId === item.barcode + 'total'}
@@ -129,7 +128,7 @@ export default function ProductsTable() {
               barcode={item.barcode}
             >
               {item.total}
-            </Item>
+            </EditableCell>
           </TableRow>
         ))}
         <TableRow>
