@@ -1,7 +1,12 @@
 import './App.css';
+import ProductsTable from './components/ProductsTable';
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <ProductsTable />
+    </>
+  );
 }
 
 export default App;
