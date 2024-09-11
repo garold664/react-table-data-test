@@ -16,10 +16,12 @@ const Item = memo(
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
+      console.log(`isBeingEdited: ${isBeingEdited}`);
       if (isBeingEdited) {
+        console.log(`Focus ${inputRef.current?.value}`);
         inputRef.current?.focus();
       }
-    }, [isBeingEdited]);
+    }, [isBeingEdited, isEdited]);
 
     return (
       <>
