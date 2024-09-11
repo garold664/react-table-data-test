@@ -15,7 +15,7 @@ import Item from './Item';
 export default function ProductsTable() {
   const [tableData, setTableData] = useState(data);
   const [editedId, setEditedId] = useState<string | null>(null);
-
+  const [cellWidth, setCellWidth] = useState(0);
   const availableTotal = tableData.reduce(
     (acc, value) => acc + +value.available,
     0
@@ -61,83 +61,75 @@ export default function ProductsTable() {
       <TableBody>
         {tableData.map((item) => (
           <TableRow key={item.barcode}>
-            <TableCell>
-              <Item
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'barcode'}
-                field="barcode"
-                barcode={item.barcode}
-              >
-                {item.barcode}
-              </Item>
-            </TableCell>
-            <TableCell>
-              <Item
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'type'}
-                field="type"
-                barcode={item.barcode}
-              >
-                {item.type}
-              </Item>
-            </TableCell>
-            <TableCell>
-              <Item
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'name'}
-                field="name"
-                barcode={item.barcode}
-              >
-                {item.name}
-              </Item>
-            </TableCell>
-            <TableCell>
-              <Item
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'size'}
-                field="size"
-                barcode={item.barcode}
-              >
-                {item.size}
-              </Item>
-            </TableCell>
-            <TableCell>
-              <Item
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'available'}
-                field="available"
-                barcode={item.barcode}
-              >
-                {item.available}
-              </Item>
-            </TableCell>
-            <TableCell>
-              <Item
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'inTransit'}
-                field="inTransit"
-                barcode={item.barcode}
-              >
-                {item.inTransit}
-              </Item>
-            </TableCell>
-            <TableCell>
-              <Item
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'total'}
-                field="total"
-                barcode={item.barcode}
-              >
-                {item.total}
-              </Item>
-            </TableCell>
+            <Item
+              update={updateTableData}
+              setEditedId={setEditedId}
+              isEdited={editedId === item.barcode + 'barcode'}
+              field="barcode"
+              barcode={item.barcode}
+            >
+              {item.barcode}
+            </Item>
+
+            <Item
+              update={updateTableData}
+              setEditedId={setEditedId}
+              isEdited={editedId === item.barcode + 'type'}
+              field="type"
+              barcode={item.barcode}
+            >
+              {item.type}
+            </Item>
+
+            <Item
+              update={updateTableData}
+              setEditedId={setEditedId}
+              isEdited={editedId === item.barcode + 'name'}
+              field="name"
+              barcode={item.barcode}
+            >
+              {item.name}
+            </Item>
+
+            <Item
+              update={updateTableData}
+              setEditedId={setEditedId}
+              isEdited={editedId === item.barcode + 'size'}
+              field="size"
+              barcode={item.barcode}
+            >
+              {item.size}
+            </Item>
+
+            <Item
+              update={updateTableData}
+              setEditedId={setEditedId}
+              isEdited={editedId === item.barcode + 'available'}
+              field="available"
+              barcode={item.barcode}
+            >
+              {item.available}
+            </Item>
+
+            <Item
+              update={updateTableData}
+              setEditedId={setEditedId}
+              isEdited={editedId === item.barcode + 'inTransit'}
+              field="inTransit"
+              barcode={item.barcode}
+            >
+              {item.inTransit}
+            </Item>
+
+            <Item
+              update={updateTableData}
+              setEditedId={setEditedId}
+              isEdited={editedId === item.barcode + 'total'}
+              field="total"
+              barcode={item.barcode}
+            >
+              {item.total}
+            </Item>
           </TableRow>
         ))}
         <TableRow>
