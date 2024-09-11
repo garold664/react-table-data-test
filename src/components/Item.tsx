@@ -1,5 +1,5 @@
 import { Check } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ItemProps {
   children: string | number;
@@ -10,6 +10,13 @@ interface ItemProps {
 export default function Item({ children, update, field, barcode }: ItemProps) {
   const [isEdited, setIsEdited] = useState(false);
   const [value, setValue] = useState(children);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isEdited) {
+      inputRef.current?.focus();
+    }
+  }, [isEdited]);
   return (
     <>
       {isEdited ? (
@@ -21,6 +28,7 @@ export default function Item({ children, update, field, barcode }: ItemProps) {
           }}
         >
           <input
+            ref={inputRef}
             value={value}
             onChange={(e) =>
               setValue(
