@@ -50,13 +50,10 @@ const EditableCell = memo(
               className=" resize-y overflow-hidden p-2 pr-6 w-full h-full max-h-96 text-center flex-shrink-1"
               ref={textareaRef}
               value={value}
-              // style={{ width: itemWidth && itemWidth }}
               style={{
-                // width: itemWidth,
                 height: itemHeight,
                 minHeight: itemHeight,
               }}
-              // size={value.toString().length}
               onChange={(e) =>
                 setValue(
                   typeof children === 'number'
@@ -67,6 +64,11 @@ const EditableCell = memo(
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
+                  setValue((prevValue) =>
+                    typeof prevValue === 'number'
+                      ? +prevValue
+                      : prevValue.trim()
+                  );
                   formRef.current?.requestSubmit();
                 }
               }}
