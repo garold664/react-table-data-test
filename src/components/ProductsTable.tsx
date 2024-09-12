@@ -11,10 +11,12 @@ import {
 import data from '../data.json';
 import { useCallback, useState } from 'react';
 import EditableCell from './EditableCell';
+import { ChevronsDownIcon } from 'lucide-react';
 
 export default function ProductsTable() {
   const [tableData, setTableData] = useState(data);
   const [editedId, setEditedId] = useState<string | null>(null);
+  const [sortingOrder, setSortingOrder] = useState<'asc' | 'desc' | null>(null);
   const availableTotal = tableData.reduce(
     (acc, value) => acc + +value.available,
     0
@@ -40,6 +42,8 @@ export default function ProductsTable() {
     },
     []
   );
+
+  console.log(sortingOrder);
 
   return (
     <>
@@ -83,7 +87,38 @@ export default function ProductsTable() {
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Баркод</TableHead>
+            <TableHead className="w-[100px]">
+              Баркод{' '}
+              <button
+                onClick={() => {
+                  let newSortingOrder: 'asc' | 'desc' | null = null;
+                  if (!sortingOrder) {
+                    newSortingOrder = 'asc';
+                    setSortingOrder('asc');
+                  } else {
+                    setSortingOrder((order) => {
+                      newSortingOrder = order === 'asc' ? 'desc' : 'asc';
+                      return newSortingOrder;
+                    });
+                  }
+                  setTableData((data) => {
+                    if (newSortingOrder === 'asc') {
+                      return [...data].sort((a, b) =>
+                        a.barcode.localeCompare(b.barcode)
+                      );
+                    } else {
+                      return [...data].sort((a, b) =>
+                        b.barcode.localeCompare(a.barcode)
+                      );
+                    }
+                  });
+                }}
+              >
+                <ChevronsDownIcon
+                  className={sortingOrder === 'desc' ? 'rotate-180' : ''}
+                />
+              </button>
+            </TableHead>
             <TableHead>Предмет</TableHead>
             <TableHead>Артикул Поставщика</TableHead>
             <TableHead className="text-right">Размер</TableHead>
