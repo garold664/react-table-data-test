@@ -11,7 +11,6 @@ import {
 import data from '../data.json';
 import { useCallback, useState } from 'react';
 import EditableCell from './EditableCell';
-import { ChevronsDownIcon } from 'lucide-react';
 import { Product } from '../types/types';
 import SortButton from './SortButton';
 
@@ -46,7 +45,7 @@ export default function ProductsTable() {
     []
   );
 
-  const sortTableData =
+  const sortTableData = useCallback(
     (field: keyof Product) => (e: React.MouseEvent<HTMLButtonElement>) => {
       setSortedField(field);
       let newSortingOrder: 'asc' | 'desc' | null = null;
@@ -85,9 +84,9 @@ export default function ProductsTable() {
           });
         }
       });
-    };
-
-  console.log(sortingOrder);
+    },
+    [sortedField, sortingOrder]
+  );
 
   return (
     <>
