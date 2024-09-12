@@ -110,7 +110,7 @@ const EditableCell = memo(
         ) : (
           <div
             ref={containerRef}
-            className="p-2 pr-6"
+            className="py-7 pl-4 pr-6"
             onDoubleClick={startEditing}
           >
             {children}
