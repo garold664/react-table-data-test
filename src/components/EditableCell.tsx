@@ -16,6 +16,7 @@ const EditableCell = memo(
     const [value, setValue] = useState(children);
     const [itemWidth, setItemWidth] = useState<number | undefined>(undefined);
     const [itemHeight, setItemHeight] = useState(0);
+    const [error, setError] = useState<string | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
@@ -34,14 +35,32 @@ const EditableCell = memo(
     }, [isBeingEdited, isEdited]);
 
     const onTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      setValue(typeof children === 'number' ? +e.target.value : e.target.value);
+      // setValue(typeof children === 'number' ? +e.target.value : e.target.value);
+      {
+        setValue(e.target.value);
+        if (typeof children === 'number') {
+          if (isNaN(+e.target.value)) {
+            // console.log(typeof children, value);
+            setError('Значение должно быть числом');
+            // return;
+          } else {
+            setError(null);
+          }
+        }
+      };
 
     const saveEditedValue = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      setValue((prevValue) =>
-        typeof prevValue === 'number' ? +prevValue : prevValue.trim()
-      );
-      update(barcode, field, value);
+
+      if (error) {
+        return;
+      }
+
+      const valueToSave =
+        typeof children === 'number' ? +value : value.toString().trim();
+
+      setValue(valueToSave);
+      update(barcode, field, valueToSave);
       setIsBeingEdited(false);
       setItemWidth(undefined);
     };
@@ -53,6 +72,15 @@ const EditableCell = memo(
       }
     };
 
+    const startEditing = () => {
+      setValue(children);
+      setError(null);
+      setItemWidth(containerRef.current?.clientWidth || 0);
+      setItemHeight(containerRef.current?.clientHeight || 0);
+      setEditedId(barcode + field);
+      setIsBeingEdited(true);
+    };
+
     return (
       <TableCell style={{ width: itemWidth || undefined }}>
         {isBeingEdited && isEdited ? (
@@ -62,12 +90,15 @@ const EditableCell = memo(
             onSubmit={saveEditedValue}
           >
             <textarea
-              className=" resize-y overflow-hidden p-2 pr-6 w-full h-full max-h-96 text-center flex-shrink-1"
+              className="resize-y overflow-hidden p-2 pr-6 w-full h-full max-h-96 text-center flex-shrink-1"
               ref={textareaRef}
               value={value}
               style={{
                 height: itemHeight,
                 minHeight: itemHeight,
+                boxShadow: error ? 'red 0px 0px 0px 2px' : undefined,
+                outline: error ? '1px solid red' : undefined,
+                color: error ? 'red' : undefined,
               }}
               onChange={onTextareaChange}
               onKeyDown={onEnterPress}
@@ -84,14 +115,9 @@ const EditableCell = memo(
           <div
             ref={containerRef}
             className="p-2 pr-6"
-            onDoubleClick={() => {
-              setItemWidth(containerRef.current?.clientWidth || 0);
-              setItemHeight(containerRef.current?.clientHeight || 0);
-              setEditedId(barcode + field);
-              setIsBeingEdited(true);
-            }}
+            onDoubleClick={startEditing}
           >
-            {value}
+            {children}
           </div>
         )}
       </TableCell>
