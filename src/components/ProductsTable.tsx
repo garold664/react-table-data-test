@@ -12,11 +12,14 @@ import data from '../data.json';
 import { useCallback, useState } from 'react';
 import EditableCell from './EditableCell';
 import { ChevronsDownIcon } from 'lucide-react';
+import { Product } from '../types/types';
+import SortButton from './SortButton';
 
 export default function ProductsTable() {
   const [tableData, setTableData] = useState(data);
   const [editedId, setEditedId] = useState<string | null>(null);
   const [sortingOrder, setSortingOrder] = useState<'asc' | 'desc' | null>(null);
+  const [sortedField, setSortedField] = useState<keyof Product | null>(null);
   const availableTotal = tableData.reduce(
     (acc, value) => acc + +value.available,
     0
@@ -42,6 +45,47 @@ export default function ProductsTable() {
     },
     []
   );
+
+  const sortTableData =
+    (field: keyof Product) => (e: React.MouseEvent<HTMLButtonElement>) => {
+      setSortedField(field);
+      let newSortingOrder: 'asc' | 'desc' | null = null;
+      if (!sortingOrder || sortedField !== field) {
+        newSortingOrder = 'asc';
+        setSortingOrder('asc');
+      } else {
+        setSortingOrder((order) => {
+          newSortingOrder = order === 'asc' ? 'desc' : 'asc';
+          return newSortingOrder;
+        });
+      }
+      setTableData((data) => {
+        if (newSortingOrder === 'asc') {
+          return [...data].sort((a, b) => {
+            // if (typeof a[field] === 'number' && typeof b[field] === 'number') {
+            if (
+              field === 'total' ||
+              field === 'available' ||
+              field === 'inTransit'
+            ) {
+              return a[field] - b[field];
+            }
+            return a[field].localeCompare(b[field]);
+          });
+        } else {
+          return [...data].sort((a, b) => {
+            if (
+              field === 'total' ||
+              field === 'available' ||
+              field === 'inTransit'
+            ) {
+              return b[field] - a[field];
+            }
+            return b[field].localeCompare(a[field]);
+          });
+        }
+      });
+    };
 
   console.log(sortingOrder);
 
@@ -89,44 +133,67 @@ export default function ProductsTable() {
           <TableRow>
             <TableHead className="w-[100px]">
               Баркод{' '}
-              <button
-                onClick={() => {
-                  let newSortingOrder: 'asc' | 'desc' | null = null;
-                  if (!sortingOrder) {
-                    newSortingOrder = 'asc';
-                    setSortingOrder('asc');
-                  } else {
-                    setSortingOrder((order) => {
-                      newSortingOrder = order === 'asc' ? 'desc' : 'asc';
-                      return newSortingOrder;
-                    });
-                  }
-                  setTableData((data) => {
-                    if (newSortingOrder === 'asc') {
-                      return [...data].sort((a, b) =>
-                        a.barcode.localeCompare(b.barcode)
-                      );
-                    } else {
-                      return [...data].sort((a, b) =>
-                        b.barcode.localeCompare(a.barcode)
-                      );
-                    }
-                  });
-                }}
-              >
-                <ChevronsDownIcon
-                  className={sortingOrder === 'desc' ? 'rotate-180' : ''}
-                />
-              </button>
+              <SortButton
+                sortTableData={sortTableData}
+                sortedField={sortedField}
+                sortingOrder={sortingOrder}
+                field="barcode"
+              />
             </TableHead>
-            <TableHead>Предмет</TableHead>
-            <TableHead>Артикул Поставщика</TableHead>
-            <TableHead className="text-right">Размер</TableHead>
-            <TableHead className="text-right">Доступно к заказу</TableHead>
+            <TableHead>
+              Предмет{' '}
+              <SortButton
+                sortTableData={sortTableData}
+                sortedField={sortedField}
+                sortingOrder={sortingOrder}
+                field="type"
+              />
+            </TableHead>
+            <TableHead>
+              Артикул Поставщика{' '}
+              <SortButton
+                sortTableData={sortTableData}
+                sortedField={sortedField}
+                sortingOrder={sortingOrder}
+                field="name"
+              />
+            </TableHead>
             <TableHead className="text-right">
-              Товары в пути (заказы и возвраты)
+              Размер{' '}
+              <SortButton
+                sortTableData={sortTableData}
+                sortedField={sortedField}
+                sortingOrder={sortingOrder}
+                field="size"
+              />
             </TableHead>
-            <TableHead className="text-right">Итого кол-во товаров</TableHead>
+            <TableHead className="text-right">
+              Доступно к заказу{' '}
+              <SortButton
+                sortTableData={sortTableData}
+                sortedField={sortedField}
+                sortingOrder={sortingOrder}
+                field="available"
+              />
+            </TableHead>
+            <TableHead className="text-right">
+              Товары в пути (заказы и возвраты){' '}
+              <SortButton
+                sortTableData={sortTableData}
+                sortedField={sortedField}
+                sortingOrder={sortingOrder}
+                field="inTransit"
+              />
+            </TableHead>
+            <TableHead className="text-right">
+              Итого кол-во товаров
+              <SortButton
+                sortTableData={sortTableData}
+                sortedField={sortedField}
+                sortingOrder={sortingOrder}
+                field="total"
+              />
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
