@@ -34,20 +34,16 @@ const EditableCell = memo(
       }
     }, [isBeingEdited, isEdited]);
 
-    const onTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      // setValue(typeof children === 'number' ? +e.target.value : e.target.value);
-      {
-        setValue(e.target.value);
-        if (typeof children === 'number') {
-          if (isNaN(+e.target.value)) {
-            // console.log(typeof children, value);
-            setError('Значение должно быть числом');
-            // return;
-          } else {
-            setError(null);
-          }
+    const onTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setValue(e.target.value);
+      if (typeof children === 'number') {
+        if (isNaN(+e.target.value)) {
+          setError('Значение должно быть числом');
+        } else {
+          setError(null);
         }
-      };
+      }
+    };
 
     const saveEditedValue = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
