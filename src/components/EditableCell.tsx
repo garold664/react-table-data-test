@@ -33,18 +33,33 @@ const EditableCell = memo(
       }
     }, [isBeingEdited, isEdited]);
 
+    const onTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+      setValue(typeof children === 'number' ? +e.target.value : e.target.value);
+
+    const saveEditedValue = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setValue((prevValue) =>
+        typeof prevValue === 'number' ? +prevValue : prevValue.trim()
+      );
+      update(barcode, field, value);
+      setIsBeingEdited(false);
+      setItemWidth(undefined);
+    };
+
+    const onEnterPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        formRef.current?.requestSubmit();
+      }
+    };
+
     return (
       <TableCell style={{ width: itemWidth || undefined }}>
         {isBeingEdited && isEdited ? (
           <form
             ref={formRef}
             className="relative flex top-0 left-0 w-full h-full"
-            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-              e.preventDefault();
-              update(barcode, field, value);
-              setIsBeingEdited(false);
-              setItemWidth(undefined);
-            }}
+            onSubmit={saveEditedValue}
           >
             <textarea
               className=" resize-y overflow-hidden p-2 pr-6 w-full h-full max-h-96 text-center flex-shrink-1"
@@ -54,24 +69,8 @@ const EditableCell = memo(
                 height: itemHeight,
                 minHeight: itemHeight,
               }}
-              onChange={(e) =>
-                setValue(
-                  typeof children === 'number'
-                    ? +e.target.value
-                    : e.target.value
-                )
-              }
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  setValue((prevValue) =>
-                    typeof prevValue === 'number'
-                      ? +prevValue
-                      : prevValue.trim()
-                  );
-                  formRef.current?.requestSubmit();
-                }
-              }}
+              onChange={onTextareaChange}
+              onKeyDown={onEnterPress}
             />
 
             <button
