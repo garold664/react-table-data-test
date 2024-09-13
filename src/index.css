@@ -12,7 +12,8 @@
     --primary: #161e2b;
     --primary-foreground: 210 40% 98%;
     --secondary: #293148;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary-foreground: #ffffff;
+    --tertiary: #666d89;
     --muted: #eef2f5;
     --muted-light: #fbfbfb;
     --muted-foreground: 215.4 16.3% 46.9%;
