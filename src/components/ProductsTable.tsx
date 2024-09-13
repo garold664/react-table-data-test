@@ -1,18 +1,11 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from './ui/table';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from './ui/table';
 
 import data from '../data.json';
 import { useCallback, useState } from 'react';
 import EditableCell from './EditableCell';
 import { Product } from '../types/types';
 import SortButton from './SortButton';
+import Cell from './Cell';
 
 export default function ProductsTable() {
   const [tableData, setTableData] = useState(data);
@@ -88,6 +81,70 @@ export default function ProductsTable() {
     [sortedField, sortingOrder]
   );
 
+  const HeadCell = ({
+    children,
+    field,
+  }: {
+    children: string;
+    field: keyof Product;
+  }) => {
+    return (
+      <TableHead className="font-normal">
+        <div className="flex items-center">
+          {children}{' '}
+          <SortButton
+            sortTableData={sortTableData}
+            sortedField={sortedField}
+            sortingOrder={sortingOrder}
+            field={field}
+          />
+        </div>
+      </TableHead>
+    );
+  };
+
+  const EditableCellWrapper = ({
+    children,
+    field,
+    barcode,
+  }: {
+    children: string | number;
+    field: keyof Product;
+    barcode: string;
+  }) => {
+    return (
+      <EditableCell
+        update={updateTableData}
+        setEditedId={setEditedId}
+        isEdited={editedId === barcode + field}
+        field={field}
+        barcode={barcode}
+      >
+        {children}
+      </EditableCell>
+    );
+  };
+
+  const productFields = [
+    'barcode',
+    'type',
+    'name',
+    'size',
+    'available',
+    'inTransit',
+    'total',
+  ] as const;
+
+  const productFieldNames = {
+    barcode: 'Баркод',
+    type: 'Предмет',
+    name: 'Артикул поставщика',
+    size: 'Размер',
+    available: 'Доступно к заказу',
+    inTransit: 'Товары в пути (заказы и возвраты)',
+    total: 'Итого',
+  };
+
   return (
     <>
       <form action="">
@@ -124,150 +181,36 @@ export default function ProductsTable() {
       >
         Экспорт
       </button>
-      <div className="w-[1230px] px-5 pt-14 pb-5 bg-white rounded-xl m-auto shadow-sm">
-        <Table>
+      <div className="max-w-[1230px] px-5 pt-14 pb-5 bg-white rounded-xl m-auto shadow-sm">
+        <Table className="border-separate border-spacing-1.5">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">
-                Баркод{' '}
-                <SortButton
-                  sortTableData={sortTableData}
-                  sortedField={sortedField}
-                  sortingOrder={sortingOrder}
-                  field="barcode"
-                />
-              </TableHead>
-              <TableHead>
-                Предмет{' '}
-                <SortButton
-                  sortTableData={sortTableData}
-                  sortedField={sortedField}
-                  sortingOrder={sortingOrder}
-                  field="type"
-                />
-              </TableHead>
-              <TableHead>
-                Артикул Поставщика{' '}
-                <SortButton
-                  sortTableData={sortTableData}
-                  sortedField={sortedField}
-                  sortingOrder={sortingOrder}
-                  field="name"
-                />
-              </TableHead>
-              <TableHead className="text-right">
-                Размер{' '}
-                <SortButton
-                  sortTableData={sortTableData}
-                  sortedField={sortedField}
-                  sortingOrder={sortingOrder}
-                  field="size"
-                />
-              </TableHead>
-              <TableHead className="text-right">
-                Доступно к заказу{' '}
-                <SortButton
-                  sortTableData={sortTableData}
-                  sortedField={sortedField}
-                  sortingOrder={sortingOrder}
-                  field="available"
-                />
-              </TableHead>
-              <TableHead className="text-right">
-                Товары в пути (заказы и возвраты){' '}
-                <SortButton
-                  sortTableData={sortTableData}
-                  sortedField={sortedField}
-                  sortingOrder={sortingOrder}
-                  field="inTransit"
-                />
-              </TableHead>
-              <TableHead className="text-right">
-                Итого кол-во товаров
-                <SortButton
-                  sortTableData={sortTableData}
-                  sortedField={sortedField}
-                  sortingOrder={sortingOrder}
-                  field="total"
-                />
-              </TableHead>
+              {productFields.map((field) => (
+                <HeadCell key={field} field={field}>
+                  {productFieldNames[field]}
+                </HeadCell>
+              ))}
             </TableRow>
           </TableHeader>
           <TableBody>
             {tableData.map((item) => (
               <TableRow key={item.barcode}>
-                <EditableCell
-                  update={updateTableData}
-                  setEditedId={setEditedId}
-                  isEdited={editedId === item.barcode + 'barcode'}
-                  field="barcode"
-                  barcode={item.barcode}
-                >
-                  {item.barcode}
-                </EditableCell>
-                <EditableCell
-                  update={updateTableData}
-                  setEditedId={setEditedId}
-                  isEdited={editedId === item.barcode + 'type'}
-                  field="type"
-                  barcode={item.barcode}
-                >
-                  {item.type}
-                </EditableCell>
-                <EditableCell
-                  update={updateTableData}
-                  setEditedId={setEditedId}
-                  isEdited={editedId === item.barcode + 'name'}
-                  field="name"
-                  barcode={item.barcode}
-                >
-                  {item.name}
-                </EditableCell>
-                <EditableCell
-                  update={updateTableData}
-                  setEditedId={setEditedId}
-                  isEdited={editedId === item.barcode + 'size'}
-                  field="size"
-                  barcode={item.barcode}
-                >
-                  {item.size}
-                </EditableCell>
-                <EditableCell
-                  update={updateTableData}
-                  setEditedId={setEditedId}
-                  isEdited={editedId === item.barcode + 'available'}
-                  field="available"
-                  barcode={item.barcode}
-                >
-                  {item.available}
-                </EditableCell>
-                <EditableCell
-                  update={updateTableData}
-                  setEditedId={setEditedId}
-                  isEdited={editedId === item.barcode + 'inTransit'}
-                  field="inTransit"
-                  barcode={item.barcode}
-                >
-                  {item.inTransit}
-                </EditableCell>
-                <EditableCell
-                  update={updateTableData}
-                  setEditedId={setEditedId}
-                  isEdited={editedId === item.barcode + 'total'}
-                  field="total"
-                  barcode={item.barcode}
-                >
-                  {item.total}
-                </EditableCell>
+                {productFields.map((field) => (
+                  <EditableCellWrapper
+                    key={field}
+                    barcode={item.barcode}
+                    field={field}
+                  >
+                    {item[field]}
+                  </EditableCellWrapper>
+                ))}
               </TableRow>
             ))}
             <TableRow>
-              <TableCell className="text-left" colSpan={4}>
-                Итого:
-              </TableCell>
-              <TableCell>{availableTotal}</TableCell>
-              <TableCell>{inTransitTotal} </TableCell>
-              <TableCell>{total}</TableCell>
+              <Cell colSpan={4}>Итого:</Cell>
+              <Cell>{availableTotal}</Cell>
+              <Cell>{inTransitTotal} </Cell>
+              <Cell>{total}</Cell>
             </TableRow>
           </TableBody>
         </Table>

@@ -15,9 +15,11 @@ const SortButton = memo(
     return (
       <button onClick={sortTableData(field)}>
         <ChevronsDownIcon
-          className={
+          size={15}
+          color="currentColor"
+          className={`${
             sortingOrder === 'desc' && sortedField === field ? 'rotate-180' : ''
-          }
+          } text-accent`}
         />
       </button>
     );

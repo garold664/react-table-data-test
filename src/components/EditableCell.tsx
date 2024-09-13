@@ -1,6 +1,6 @@
 import { Check } from 'lucide-react';
 import { memo, useEffect, useRef, useState } from 'react';
-import { TableCell } from './ui/table';
+import Cell from './Cell';
 
 interface ItemProps {
   children: string | number;
@@ -77,11 +77,10 @@ const EditableCell = memo(
       setIsBeingEdited(true);
     };
 
+    const paddingStyles = 'py-7 pl-4';
+
     return (
-      <TableCell
-        className="group/cell"
-        style={{ width: itemWidth || undefined }}
-      >
+      <Cell className="p-0" style={{ width: itemWidth || undefined }}>
         {isBeingEdited && isEdited ? (
           <form
             ref={formRef}
@@ -89,7 +88,7 @@ const EditableCell = memo(
             onSubmit={saveEditedValue}
           >
             <textarea
-              className="resize-y overflow-hidden py-7 pl-4 pr-6 w-full h-full max-h-96 text-center flex-shrink-1"
+              className={`resize-y overflow-hidden  pr-6 w-full h-full max-h-96 text-left flex-shrink-1 ${paddingStyles}`}
               ref={textareaRef}
               value={value}
               style={{
@@ -113,13 +112,13 @@ const EditableCell = memo(
         ) : (
           <div
             ref={containerRef}
-            className="py-7 pl-4 pr-6 bg-muted-light shadow-sm shadow-gray-300 group-even:bg-muted group-first/cell:rounded-s-lg"
+            className={`${paddingStyles}`}
             onDoubleClick={startEditing}
           >
             {children}
           </div>
         )}
-      </TableCell>
+      </Cell>
     );
   }
 );
