@@ -23,6 +23,7 @@ const EditableCell = memo(
 
     useEffect(() => {
       if (isBeingEdited) {
+        console.log('use effect: editing');
         const textarea = textareaRef.current;
 
         if (!textarea) return;
@@ -32,7 +33,16 @@ const EditableCell = memo(
           textarea.value.length
         );
       }
-    }, [isBeingEdited, isEdited]);
+    }, [isBeingEdited]);
+
+    useEffect(() => {
+      if (!isEdited) return;
+      setValue(children);
+      setError(null);
+      setItemWidth(containerRef.current?.clientWidth || 0);
+      setItemHeight(containerRef.current?.clientHeight || 0);
+      setIsBeingEdited(true);
+    }, [isEdited, children]);
 
     const onTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setValue(e.target.value);
@@ -58,6 +68,7 @@ const EditableCell = memo(
       setValue(valueToSave);
       update(barcode, field, valueToSave);
       setIsBeingEdited(false);
+      setEditedId(null);
       setItemWidth(undefined);
     };
 
@@ -69,15 +80,11 @@ const EditableCell = memo(
     };
 
     const startEditing = () => {
-      setValue(children);
-      setError(null);
-      setItemWidth(containerRef.current?.clientWidth || 0);
-      setItemHeight(containerRef.current?.clientHeight || 0);
+      console.log('editing');
       setEditedId(barcode + field);
-      setIsBeingEdited(true);
     };
 
-    const paddingStyles = 'py-7 pl-4';
+    const paddingStyles = 'py-7 pl-4 pr-6 ';
 
     return (
       <Cell className="p-0" style={{ width: itemWidth || undefined }}>
@@ -88,7 +95,7 @@ const EditableCell = memo(
             onSubmit={saveEditedValue}
           >
             <textarea
-              className={`resize-y overflow-hidden  pr-6 w-full h-full max-h-96 text-left flex-shrink-1 ${paddingStyles}`}
+              className={`resize-y overflow-hidden  w-full h-full max-h-96 text-left flex-shrink-1 ${paddingStyles}`}
               ref={textareaRef}
               value={value}
               style={{
