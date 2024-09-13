@@ -1,6 +1,9 @@
+import { MessageCircleMoreIcon } from 'lucide-react';
 import InfoWidget from './components/InfoWidget';
 import MenuWidget from './components/MenuWidget';
 import ProductsTable from './components/ProductsTable';
+import { Button } from './components/ui/button';
+import UserPanel from './components/UserPanel';
 
 function App() {
   return (
@@ -8,8 +11,13 @@ function App() {
       <aside className="w-96">
         <MenuWidget />
         <InfoWidget />
+        <Button variant={'accent'} className="w-full py-8 rounded-2xl gap-2">
+          <MessageCircleMoreIcon /> Связаться с нами
+        </Button>
       </aside>
       <div>
+        <UserPanel />
+        <form action=""></form>
         <ProductsTable />
       </div>
     </div>

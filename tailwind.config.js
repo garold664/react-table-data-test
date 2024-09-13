@@ -42,7 +42,7 @@ export default {
         },
         accent: {
           DEFAULT: 'var(--accent)',
-          foreground: 'hsl(var(--accent-foreground))',
+          foreground: 'var(--accent-foreground)',
         },
         accent2: {
           DEFAULT: 'var(--accent2)',
