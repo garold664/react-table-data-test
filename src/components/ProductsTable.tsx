@@ -98,9 +98,7 @@ export default function ProductsTable() {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             const file = e.target.files?.[0];
             if (!file) return;
-            // console.log(file);
             if (file.type !== 'application/json') return;
-            // console.log(file.type === 'application/json');
             const reader = new FileReader();
             reader.onload = (e: ProgressEvent<FileReader>) => {
               const jsonData = JSON.parse(e.target?.result as string);
@@ -126,153 +124,154 @@ export default function ProductsTable() {
       >
         Экспорт
       </button>
-      <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">
-              Баркод{' '}
-              <SortButton
-                sortTableData={sortTableData}
-                sortedField={sortedField}
-                sortingOrder={sortingOrder}
-                field="barcode"
-              />
-            </TableHead>
-            <TableHead>
-              Предмет{' '}
-              <SortButton
-                sortTableData={sortTableData}
-                sortedField={sortedField}
-                sortingOrder={sortingOrder}
-                field="type"
-              />
-            </TableHead>
-            <TableHead>
-              Артикул Поставщика{' '}
-              <SortButton
-                sortTableData={sortTableData}
-                sortedField={sortedField}
-                sortingOrder={sortingOrder}
-                field="name"
-              />
-            </TableHead>
-            <TableHead className="text-right">
-              Размер{' '}
-              <SortButton
-                sortTableData={sortTableData}
-                sortedField={sortedField}
-                sortingOrder={sortingOrder}
-                field="size"
-              />
-            </TableHead>
-            <TableHead className="text-right">
-              Доступно к заказу{' '}
-              <SortButton
-                sortTableData={sortTableData}
-                sortedField={sortedField}
-                sortingOrder={sortingOrder}
-                field="available"
-              />
-            </TableHead>
-            <TableHead className="text-right">
-              Товары в пути (заказы и возвраты){' '}
-              <SortButton
-                sortTableData={sortTableData}
-                sortedField={sortedField}
-                sortingOrder={sortingOrder}
-                field="inTransit"
-              />
-            </TableHead>
-            <TableHead className="text-right">
-              Итого кол-во товаров
-              <SortButton
-                sortTableData={sortTableData}
-                sortedField={sortedField}
-                sortingOrder={sortingOrder}
-                field="total"
-              />
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tableData.map((item) => (
-            <TableRow key={item.barcode}>
-              <EditableCell
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'barcode'}
-                field="barcode"
-                barcode={item.barcode}
-              >
-                {item.barcode}
-              </EditableCell>
-              <EditableCell
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'type'}
-                field="type"
-                barcode={item.barcode}
-              >
-                {item.type}
-              </EditableCell>
-              <EditableCell
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'name'}
-                field="name"
-                barcode={item.barcode}
-              >
-                {item.name}
-              </EditableCell>
-              <EditableCell
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'size'}
-                field="size"
-                barcode={item.barcode}
-              >
-                {item.size}
-              </EditableCell>
-              <EditableCell
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'available'}
-                field="available"
-                barcode={item.barcode}
-              >
-                {item.available}
-              </EditableCell>
-              <EditableCell
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'inTransit'}
-                field="inTransit"
-                barcode={item.barcode}
-              >
-                {item.inTransit}
-              </EditableCell>
-              <EditableCell
-                update={updateTableData}
-                setEditedId={setEditedId}
-                isEdited={editedId === item.barcode + 'total'}
-                field="total"
-                barcode={item.barcode}
-              >
-                {item.total}
-              </EditableCell>
+      <div className="w-[1230px] px-5 pt-14 pb-5 bg-white rounded-xl m-auto shadow-sm">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">
+                Баркод{' '}
+                <SortButton
+                  sortTableData={sortTableData}
+                  sortedField={sortedField}
+                  sortingOrder={sortingOrder}
+                  field="barcode"
+                />
+              </TableHead>
+              <TableHead>
+                Предмет{' '}
+                <SortButton
+                  sortTableData={sortTableData}
+                  sortedField={sortedField}
+                  sortingOrder={sortingOrder}
+                  field="type"
+                />
+              </TableHead>
+              <TableHead>
+                Артикул Поставщика{' '}
+                <SortButton
+                  sortTableData={sortTableData}
+                  sortedField={sortedField}
+                  sortingOrder={sortingOrder}
+                  field="name"
+                />
+              </TableHead>
+              <TableHead className="text-right">
+                Размер{' '}
+                <SortButton
+                  sortTableData={sortTableData}
+                  sortedField={sortedField}
+                  sortingOrder={sortingOrder}
+                  field="size"
+                />
+              </TableHead>
+              <TableHead className="text-right">
+                Доступно к заказу{' '}
+                <SortButton
+                  sortTableData={sortTableData}
+                  sortedField={sortedField}
+                  sortingOrder={sortingOrder}
+                  field="available"
+                />
+              </TableHead>
+              <TableHead className="text-right">
+                Товары в пути (заказы и возвраты){' '}
+                <SortButton
+                  sortTableData={sortTableData}
+                  sortedField={sortedField}
+                  sortingOrder={sortingOrder}
+                  field="inTransit"
+                />
+              </TableHead>
+              <TableHead className="text-right">
+                Итого кол-во товаров
+                <SortButton
+                  sortTableData={sortTableData}
+                  sortedField={sortedField}
+                  sortingOrder={sortingOrder}
+                  field="total"
+                />
+              </TableHead>
             </TableRow>
-          ))}
-          <TableRow>
-            <TableCell className="text-left" colSpan={4}>
-              Итого:
-            </TableCell>
-            <TableCell>{availableTotal}</TableCell>
-            <TableCell>{inTransitTotal} </TableCell>
-            <TableCell>{total}</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {tableData.map((item) => (
+              <TableRow key={item.barcode}>
+                <EditableCell
+                  update={updateTableData}
+                  setEditedId={setEditedId}
+                  isEdited={editedId === item.barcode + 'barcode'}
+                  field="barcode"
+                  barcode={item.barcode}
+                >
+                  {item.barcode}
+                </EditableCell>
+                <EditableCell
+                  update={updateTableData}
+                  setEditedId={setEditedId}
+                  isEdited={editedId === item.barcode + 'type'}
+                  field="type"
+                  barcode={item.barcode}
+                >
+                  {item.type}
+                </EditableCell>
+                <EditableCell
+                  update={updateTableData}
+                  setEditedId={setEditedId}
+                  isEdited={editedId === item.barcode + 'name'}
+                  field="name"
+                  barcode={item.barcode}
+                >
+                  {item.name}
+                </EditableCell>
+                <EditableCell
+                  update={updateTableData}
+                  setEditedId={setEditedId}
+                  isEdited={editedId === item.barcode + 'size'}
+                  field="size"
+                  barcode={item.barcode}
+                >
+                  {item.size}
+                </EditableCell>
+                <EditableCell
+                  update={updateTableData}
+                  setEditedId={setEditedId}
+                  isEdited={editedId === item.barcode + 'available'}
+                  field="available"
+                  barcode={item.barcode}
+                >
+                  {item.available}
+                </EditableCell>
+                <EditableCell
+                  update={updateTableData}
+                  setEditedId={setEditedId}
+                  isEdited={editedId === item.barcode + 'inTransit'}
+                  field="inTransit"
+                  barcode={item.barcode}
+                >
+                  {item.inTransit}
+                </EditableCell>
+                <EditableCell
+                  update={updateTableData}
+                  setEditedId={setEditedId}
+                  isEdited={editedId === item.barcode + 'total'}
+                  field="total"
+                  barcode={item.barcode}
+                >
+                  {item.total}
+                </EditableCell>
+              </TableRow>
+            ))}
+            <TableRow>
+              <TableCell className="text-left" colSpan={4}>
+                Итого:
+              </TableCell>
+              <TableCell>{availableTotal}</TableCell>
+              <TableCell>{inTransitTotal} </TableCell>
+              <TableCell>{total}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 }

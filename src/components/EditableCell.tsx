@@ -78,7 +78,10 @@ const EditableCell = memo(
     };
 
     return (
-      <TableCell style={{ width: itemWidth || undefined }}>
+      <TableCell
+        className="group/cell"
+        style={{ width: itemWidth || undefined }}
+      >
         {isBeingEdited && isEdited ? (
           <form
             ref={formRef}
@@ -86,7 +89,7 @@ const EditableCell = memo(
             onSubmit={saveEditedValue}
           >
             <textarea
-              className="resize-y overflow-hidden p-2 pr-6 w-full h-full max-h-96 text-center flex-shrink-1"
+              className="resize-y overflow-hidden py-7 pl-4 pr-6 w-full h-full max-h-96 text-center flex-shrink-1"
               ref={textareaRef}
               value={value}
               style={{
@@ -110,7 +113,7 @@ const EditableCell = memo(
         ) : (
           <div
             ref={containerRef}
-            className="py-7 pl-4 pr-6"
+            className="py-7 pl-4 pr-6 bg-muted-light shadow-sm shadow-gray-300 group-even:bg-muted group-first/cell:rounded-s-lg"
             onDoubleClick={startEditing}
           >
             {children}
