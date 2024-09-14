@@ -51,6 +51,12 @@ const EditableCell = memo(
         } else {
           setError(null);
         }
+      } else {
+        if (e.target.value === '') {
+          setError('Значение не может быть пустым');
+        } else {
+          setError(null);
+        }
       }
     };
 
@@ -84,7 +90,8 @@ const EditableCell = memo(
 
     const paddingStyles = 'py-7 pl-4 pr-6 ';
 
-    const errorStyles = 'shadow-red-800 outline-red-800 text-red-800';
+    const errorStyles =
+      'shadow-red-800 outline-red-800 text-red-800 bg-red-200/30';
 
     return (
       <Cell className="p-0" style={{ width: itemWidth || undefined }}>
@@ -115,7 +122,7 @@ const EditableCell = memo(
               <Check className="hover:text-accent text-black" />
             </button>
             {error && (
-              <div className="absolute left-0 -bottom-full w-full bg-white/90 p-1  text-red-500 text-xs z-50">
+              <div className="absolute left-0 -bottom-2 translate-y-full w-full bg-white/90 p-1  text-red-500 text-xs z-50">
                 {error}
               </div>
             )}
