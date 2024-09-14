@@ -33,31 +33,30 @@ interface FormBlockProps {
   tableData: Product[];
 }
 
-const formSchema = z
-  .object({
-    barcode: z.string(),
-    category: z.string(),
-    article: z.string(),
-    size: z.coerce.number().gte(0, {
-      message: 'Размер должен быть больше нуля',
-    }),
-  })
-  .refine(
-    (data) => {
-      if (
-        data.barcode ||
-        data.article ||
-        data.category !== 'Все' ||
-        data.size > 0
-      )
-        return true;
-      else return false;
-    },
-    {
-      message: 'Хотя бы одно поле должно быть заполнено',
-      path: ['barcode'],
-    }
-  );
+const formSchema = z.object({
+  barcode: z.string(),
+  category: z.string(),
+  article: z.string(),
+  size: z.coerce.number().gte(0, {
+    message: 'Размер должен быть больше нуля',
+  }),
+});
+// .refine(
+//   (data) => {
+//     if (
+//       data.barcode ||
+//       data.article ||
+//       data.category !== 'Все' ||
+//       data.size > 0
+//     )
+//       return true;
+//     else return false;
+//   },
+//   {
+//     message: 'Хотя бы одно поле должно быть заполнено',
+//     path: ['barcode'],
+//   }
+// );
 
 const exportData = (tableData: Product[]) => () => {
   if (!tableData || tableData.length === 0) return;
@@ -123,32 +122,33 @@ export default function FormBlock({ setTableData, tableData }: FormBlockProps) {
     article,
     size,
   }: z.infer<typeof formSchema>) => {
-    // console.log(article, category);
     setTableData(() => {
-      let newData: Product[] = [...tableData];
-      newData =
-        size > 0
-          ? newData.filter((product) => {
-              const firstSize = Number(product.size.split('-')[0]);
-              const lastSize = Number(product.size.split('-')[1]);
-              if (!lastSize) return firstSize === size;
-              return firstSize <= size && lastSize >= size;
-            })
-          : newData;
-      console.log(newData);
-      newData = barcode
-        ? newData.filter((product) => product.barcode === barcode)
-        : newData;
-      console.log(newData);
-      newData = article
-        ? newData.filter((product) => product.type === article)
-        : newData;
-      console.log(newData);
-      newData =
-        category !== 'Все'
-          ? newData.filter((product) => product.name === category)
-          : newData;
-      console.log(newData, category);
+      const newData = [...tableData].filter((product) => {
+        if (
+          size === 0 &&
+          category === 'Все' &&
+          barcode === '' &&
+          article === ''
+        )
+          return true;
+        const firstSize = Number(product.size.split('-')[0]);
+        const lastSize = Number(product.size.split('-')[1]);
+        let isSize = false;
+        if (size === 0) isSize = true;
+        else if (!lastSize) isSize = firstSize === size;
+        else isSize = firstSize <= size && lastSize >= size;
+
+        let isArticle = false;
+        if (article === '') isArticle = true;
+        else isArticle = product.type === article;
+        let isCategory = false;
+        if (category === 'Все') isCategory = true;
+        else isCategory = product.name === category;
+        let isBarcode = false;
+        if (barcode === '') isBarcode = true;
+        else isBarcode = product.barcode === barcode;
+        return isSize && isArticle && isCategory && isBarcode;
+      });
       return newData;
     });
   };
