@@ -70,6 +70,30 @@
   #root {
     @apply bg-muted;
   }
+
+  ::-webkit-scrollbar {
+    width: 1rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 100vw;
+
+    margin-block: 0.1em;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 100vw;
+    border: 0.1em solid transparent;
+  }
+
+  @supports (scrollbar-color: red blue) {
+    * {
+      scrollbar-color: var(--accent) transparent;
+      scrollbar-width: thin;
+    }
+  }
 }
 
 td {

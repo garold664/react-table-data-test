@@ -27,6 +27,7 @@ import * as z from 'zod';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '../ui/input';
+import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 interface FormBlockProps {
   setTableData: React.Dispatch<React.SetStateAction<Product[]>>;
   tableData: Product[];
@@ -154,88 +155,98 @@ export default function FormBlock({ setTableData, tableData }: FormBlockProps) {
   return (
     <Form {...form}>
       <form action="" className="" onSubmit={form.handleSubmit(handleSubmit)}>
-        <section className="flex gap-3 mb-3">
-          <FormField
-            name="barcode"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Баркод</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    id="barcode"
-                    type="text"
-                    placeholder="5643242134323099"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="article"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Артикул</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    className=""
-                    type="text"
-                    placeholder="ДжЖСинМом0823"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="size"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Размер</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    className="w-16 text-center"
-                    type="number"
-                    min={0}
-                    placeholder="44"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <ScrollArea
+          type={'auto'}
+          className="w-full flex gap-3 mb-3 whitespace-nowrap"
+        >
+          <section className="flex gap-3 mb-3">
+            <FormField
+              name="barcode"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Баркод</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      id="barcode"
+                      type="text"
+                      placeholder="5643242134323099"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="article"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Артикул</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className=""
+                      type="text"
+                      placeholder="ДжЖСинМом0823"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="size"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Размер</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="w-16 text-center"
+                      type="number"
+                      min={0}
+                      placeholder="44"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            name="category"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem className="flex-col items-start space-x-0 space-y-2">
-                <FormLabel className="text-slate-400">Категория</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange}>
-                    <SelectTrigger className="space-x-4 w-full p-0 h-4">
-                      <SelectValue placeholder="Все" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Все">Все</SelectItem>
-                      {categories.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-              </FormItem>
-            )}
-          ></FormField>
-        </section>
+            <FormField
+              name="category"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex-col items-start space-x-0 space-y-2">
+                  <FormLabel className="text-slate-400">Категория</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange}>
+                      <SelectTrigger className="space-x-4 w-full p-0 h-4">
+                        <SelectValue placeholder="Все" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Все">Все</SelectItem>
+                        {categories.map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            ></FormField>
+            <ScrollBar
+              color="red"
+              orientation="horizontal"
+              className="rounded-full bg-white text-accent"
+            />
+          </section>
+        </ScrollArea>
         <div className="flex gap-2">
           <Button variant={'accent'}>Сформировать</Button>
           <Button
@@ -247,7 +258,7 @@ export default function FormBlock({ setTableData, tableData }: FormBlockProps) {
             <span>Экспорт</span>
           </Button>
         </div>
-        <footer className="flex items-center mt-7 mb-7 border-t-2 border-b-2 border-slate-200">
+        <footer className="flex items-center mt-7 mb-7 border-t-2 border-b-2 border-slate-200 flex-wrap">
           <Button
             type="button"
             variant={'ghost'}
@@ -270,7 +281,7 @@ export default function FormBlock({ setTableData, tableData }: FormBlockProps) {
             <FolderPlusIcon size={18} />
             <span>Изменить данные</span>
           </Button>
-          <div className="border-r-2 h-6 ml-auto mr-12"></div>
+          <div className="border-r-2 h-6 ml-auto mr-12 hidden md:block" />
           <Button
             type="button"
             variant={'ghost'}

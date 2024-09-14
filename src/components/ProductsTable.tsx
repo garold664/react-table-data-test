@@ -14,6 +14,7 @@ import { Product } from '../types/types';
 import SortButton from './SortButton';
 import Cell from './Cell';
 import FormBlock from './FormBlock/FormBlock';
+import { ScrollArea, ScrollBar } from './ui/scroll-area';
 
 export default function ProductsTable() {
   const [tableData, setTableData] = useState(data as Product[]);
@@ -157,8 +158,15 @@ export default function ProductsTable() {
   return (
     <>
       <FormBlock setTableData={setFilteredData} tableData={tableData} />
+      <ScrollArea
+        type="auto"
+        className="w-full px-5 pt-14 pb-5 bg-white rounded-xl  shadow-sm "
+      >
+        <ScrollBar
+          orientation="horizontal"
+          className="bottom-auto top-5 bg-muted mx-5 rounded-full "
+        />
 
-      <div className="max-w-[1230px] px-5 pt-14 pb-5 bg-white rounded-xl m-auto shadow-sm">
         <Table className="border-separate border-spacing-1.5">
           <TableHeader>
             <TableRow>
@@ -200,7 +208,7 @@ export default function ProductsTable() {
             </TableCaption>
           )}
         </Table>
-      </div>
+      </ScrollArea>
     </>
   );
 }
