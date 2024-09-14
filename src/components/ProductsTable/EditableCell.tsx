@@ -23,7 +23,6 @@ const EditableCell = memo(
 
     useEffect(() => {
       if (isBeingEdited) {
-        console.log('use effect: editing');
         const textarea = textareaRef.current;
 
         if (!textarea) return;
@@ -80,11 +79,12 @@ const EditableCell = memo(
     };
 
     const startEditing = () => {
-      console.log('editing');
       setEditedId(barcode + field);
     };
 
     const paddingStyles = 'py-7 pl-4 pr-6 ';
+
+    const errorStyles = 'shadow-red-800 outline-red-800 text-red-800';
 
     return (
       <Cell className="p-0" style={{ width: itemWidth || undefined }}>
@@ -95,15 +95,14 @@ const EditableCell = memo(
             onSubmit={saveEditedValue}
           >
             <textarea
-              className={`resize-y overflow-hidden  w-full h-full max-h-96 text-left flex-shrink-1 ${paddingStyles}`}
+              className={`resize-y overflow-hidden  w-full h-full max-h-96 text-left flex-shrink-1 outline-accent ${paddingStyles} ${
+                error ? errorStyles : ''
+              }`}
               ref={textareaRef}
               value={value}
               style={{
                 height: itemHeight,
                 minHeight: itemHeight,
-                boxShadow: error ? 'red 0px 0px 0px 2px' : undefined,
-                outline: error ? '1px solid red' : undefined,
-                color: error ? 'red' : undefined,
               }}
               onChange={onTextareaChange}
               onKeyDown={onEnterPress}
@@ -113,8 +112,13 @@ const EditableCell = memo(
               className="absolute top-1/2 right-0 -translate-y-1/2"
               type="submit"
             >
-              <Check />
+              <Check className="hover:text-accent text-black" />
             </button>
+            {error && (
+              <div className="absolute left-0 -bottom-full w-full bg-white/90 p-1  text-red-500 text-xs z-50">
+                {error}
+              </div>
+            )}
           </form>
         ) : (
           <div

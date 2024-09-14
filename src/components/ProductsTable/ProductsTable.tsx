@@ -8,7 +8,7 @@ import {
 } from '../ui/table';
 
 import data from '../../data.json';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import EditableCell from './EditableCell';
 import { Product } from '../../types/types';
 import SortButton from './SortButton';
@@ -33,6 +33,10 @@ export default function ProductsTable() {
   );
 
   const total = filteredData.reduce((acc, value) => acc + +value.total, 0);
+
+  useEffect(() => {
+    setFilteredData(tableData);
+  }, [tableData]);
 
   const updateTableData = useCallback(
     (id: string, field: string, value: string | number) => {
