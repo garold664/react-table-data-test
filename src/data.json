@@ -46,8 +46,8 @@
   },
   {
     "barcode": "2198765432109",
-    "type": "Одежда",
-    "name": "Брюки",
+    "type": "Аксессуары",
+    "name": "Цепочка",
     "size": "50-60",
     "available": 0,
     "inTransit": 5,
@@ -61,5 +61,14 @@
     "available": 2,
     "inTransit": 45,
     "total": 15
+  },
+  {
+    "barcode": "6589231478883",
+    "type": "Аксессуары",
+    "name": "Кольцо",
+    "size": "36",
+    "available": 5,
+    "inTransit": 12,
+    "total": 35
   }
 ]

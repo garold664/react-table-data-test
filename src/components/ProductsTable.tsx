@@ -17,20 +17,21 @@ import FormBlock from './FormBlock/FormBlock';
 
 export default function ProductsTable() {
   const [tableData, setTableData] = useState(data as Product[]);
+  const [filteredData, setFilteredData] = useState(tableData);
   const [editedId, setEditedId] = useState<string | null>(null);
   const [sortingOrder, setSortingOrder] = useState<'asc' | 'desc' | null>(null);
   const [sortedField, setSortedField] = useState<keyof Product | null>(null);
-  const availableTotal = tableData.reduce(
+  const availableTotal = filteredData.reduce(
     (acc, value) => acc + +value.available,
     0
   );
 
-  const inTransitTotal = tableData.reduce(
+  const inTransitTotal = filteredData.reduce(
     (acc, value) => acc + value.inTransit,
     0
   );
 
-  const total = tableData.reduce((acc, value) => acc + +value.total, 0);
+  const total = filteredData.reduce((acc, value) => acc + +value.total, 0);
 
   const updateTableData = useCallback(
     (id: string, field: string, value: string | number) => {
@@ -59,7 +60,7 @@ export default function ProductsTable() {
           return newSortingOrder;
         });
       }
-      setTableData((data) => {
+      setFilteredData((data) => {
         if (newSortingOrder === 'asc') {
           return [...data].sort((a, b) => {
             // if (typeof a[field] === 'number' && typeof b[field] === 'number') {
@@ -155,7 +156,7 @@ export default function ProductsTable() {
 
   return (
     <>
-      <FormBlock setTableData={setTableData} tableData={tableData} />
+      <FormBlock setTableData={setFilteredData} tableData={tableData} />
 
       <div className="max-w-[1230px] px-5 pt-14 pb-5 bg-white rounded-xl m-auto shadow-sm">
         <Table className="border-separate border-spacing-1.5">
@@ -169,7 +170,7 @@ export default function ProductsTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {tableData.map((item) => (
+            {filteredData.map((item) => (
               <TableRow key={item.barcode}>
                 {productFields.map((field) => (
                   <EditableCellWrapper
@@ -183,7 +184,7 @@ export default function ProductsTable() {
               </TableRow>
             ))}
 
-            {tableData.length !== 0 && (
+            {filteredData.length !== 0 && (
               <TableRow>
                 <Cell colSpan={4}>Итого:</Cell>
                 <Cell>{availableTotal}</Cell>
@@ -192,7 +193,7 @@ export default function ProductsTable() {
               </TableRow>
             )}
           </TableBody>
-          {tableData.length === 0 && (
+          {filteredData.length === 0 && (
             <TableCaption>
               Нет данных. Чтобы загрузить данные, нажмите на кнопку "Загрузить
               данные из csv"

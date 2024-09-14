@@ -37,15 +37,23 @@ const formSchema = z
     barcode: z.string(),
     category: z.string(),
     article: z.string(),
-    size: z.coerce.number(),
+    size: z.coerce.number().gte(0, {
+      message: 'Размер должен быть больше нуля',
+    }),
   })
   .refine(
     (data) => {
-      if (data.barcode || data.article) return true;
+      if (
+        data.barcode ||
+        data.article ||
+        data.category !== 'Все' ||
+        data.size > 0
+      )
+        return true;
       else return false;
     },
     {
-      message: 'Нужно задать баркод или артикул',
+      message: 'Хотя бы одно поле должно быть заполнено',
       path: ['barcode'],
     }
   );
@@ -64,6 +72,17 @@ const exportData = (tableData: Product[]) => () => {
   link.href = href;
   link.click();
 };
+
+const categories = [
+  'Джинсы',
+  'Шорты',
+  'Кардиган',
+  'Брюки',
+  'Рубашка',
+  'Костюм',
+  'Цепочка',
+  'Кольцо',
+];
 
 const onFileInput =
   (setTableData: React.Dispatch<React.SetStateAction<Product[]>>) =>
@@ -91,14 +110,46 @@ export default function FormBlock({ setTableData, tableData }: FormBlockProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       barcode: '',
-      category: 'Джинсы',
+      category: 'Все',
       article: '',
       size: 0,
     },
   });
 
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  const handleSubmit = ({
+    barcode,
+    category,
+    article,
+    size,
+  }: z.infer<typeof formSchema>) => {
+    // console.log(article, category);
+    setTableData(() => {
+      let newData: Product[] = [...tableData];
+      newData =
+        size > 0
+          ? newData.filter((product) => {
+              const firstSize = Number(product.size.split('-')[0]);
+              const lastSize = Number(product.size.split('-')[1]);
+              if (!lastSize) return firstSize === size;
+              return firstSize <= size && lastSize >= size;
+            })
+          : newData;
+      console.log(newData);
+      newData = barcode
+        ? newData.filter((product) => product.barcode === barcode)
+        : newData;
+      console.log(newData);
+      newData = article
+        ? newData.filter((product) => product.type === article)
+        : newData;
+      console.log(newData);
+      newData =
+        category !== 'Все'
+          ? newData.filter((product) => product.name === category)
+          : newData;
+      console.log(newData, category);
+      return newData;
+    });
   };
   return (
     <Form {...form}>
@@ -151,6 +202,7 @@ export default function FormBlock({ setTableData, tableData }: FormBlockProps) {
                     {...field}
                     className="w-16 text-center"
                     type="number"
+                    min={0}
                     placeholder="44"
                   />
                 </FormControl>
@@ -162,18 +214,21 @@ export default function FormBlock({ setTableData, tableData }: FormBlockProps) {
           <FormField
             name="category"
             control={form.control}
-            render={() => (
+            render={({ field }) => (
               <FormItem className="flex-col items-start space-x-0 space-y-2">
                 <FormLabel className="text-slate-400">Категория</FormLabel>
                 <FormControl>
-                  <Select>
+                  <Select onValueChange={field.onChange}>
                     <SelectTrigger className="space-x-4 w-full p-0 h-4">
-                      <SelectValue placeholder="Джинсы" />
+                      <SelectValue placeholder="Все" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="light">Шорты</SelectItem>
-                      <SelectItem value="dark">Рубашка</SelectItem>
-                      <SelectItem value="system">Кардиган</SelectItem>
+                      <SelectItem value="Все">Все</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
