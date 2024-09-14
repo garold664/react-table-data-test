@@ -6,8 +6,8 @@ import {
   SettingsIcon,
   XIcon,
 } from 'lucide-react';
-import MenuButton from '../components/MenuButton';
-import { Button } from './ui/button';
+import MenuButton from './MenuButton';
+import { Button } from '../ui/button';
 export default function MenuWidget() {
   return (
     <Widget>

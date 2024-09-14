@@ -1,4 +1,4 @@
-import ProductsTable from './components/ProductsTable';
+import ProductsTable from './components/ProductsTable/ProductsTable';
 import UserPanel from './components/UserPanel';
 import SidePanel from './components/SidePanel';
 // import FormControl from './components/FormControl';

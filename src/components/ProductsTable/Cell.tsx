@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef } from 'react';
-import { cn } from '../lib/utils';
-import { TableCell } from './ui/table';
+import { cn } from '../../lib/utils';
+import { TableCell } from '../ui/table';
 
 interface CellProps extends ComponentPropsWithoutRef<'td'> {
   children: React.ReactNode;

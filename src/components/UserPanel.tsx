@@ -13,12 +13,12 @@ export default function UserPanel() {
         <div className="flex gap-3">
           <CircleUserRoundIcon /> Иванов И.И
         </div>
-        <div className="flex bg-accent-foreground py-6 px-5 rounded-2xl sm:ml-10 ">
+        <div className="flex bg-accent-foreground py-6 px-5 rounded-2xl sm:ml-10 gap-1 text-accent ">
           <CalendarRangeIcon
             fill="currentColor"
             stroke="white"
             className="text-accent"
-          />{' '}
+          />
           Тариф до <span>15.04.2024</span>
         </div>
         <div className="flex sm:ml-auto ">

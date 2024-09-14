@@ -5,16 +5,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from './ui/table';
+} from '../ui/table';
 
-import data from '../data.json';
+import data from '../../data.json';
 import { useCallback, useState } from 'react';
 import EditableCell from './EditableCell';
-import { Product } from '../types/types';
+import { Product } from '../../types/types';
 import SortButton from './SortButton';
 import Cell from './Cell';
-import FormBlock from './FormBlock/FormBlock';
-import { ScrollArea, ScrollBar } from './ui/scroll-area';
+import FormBlock from '../FormBlock/FormBlock';
+import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 
 export default function ProductsTable() {
   const [tableData, setTableData] = useState(data as Product[]);

@@ -1,7 +1,7 @@
 import { MenuIcon, MessageCircleMoreIcon, XIcon } from 'lucide-react';
 import { Button } from './ui/button';
-import MenuWidget from './MenuWidget';
-import InfoWidget from './InfoWidget';
+import MenuWidget from './Widget/MenuWidget';
+import InfoWidget from './Widget/InfoWidget';
 import { useState } from 'react';
 
 export default function SidePanel() {

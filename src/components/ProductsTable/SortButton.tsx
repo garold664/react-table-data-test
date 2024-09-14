@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Product } from '../types/types';
+import { Product } from '../../types/types';
 import { ChevronsDownIcon } from 'lucide-react';
 
 interface SortButtonProps {
