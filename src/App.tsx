@@ -4,7 +4,6 @@ import MenuWidget from './components/MenuWidget';
 import ProductsTable from './components/ProductsTable';
 import { Button } from './components/ui/button';
 import UserPanel from './components/UserPanel';
-import FormBlock from './components/FormBlock/FormBlock';
 // import FormControl from './components/FormControl';
 
 function App() {
@@ -19,7 +18,6 @@ function App() {
       </aside>
       <div>
         <UserPanel />
-        <FormBlock />
         <ProductsTable />
       </div>
     </div>

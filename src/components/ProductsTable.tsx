@@ -1,4 +1,11 @@
-import { Table, TableBody, TableHead, TableHeader, TableRow } from './ui/table';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './ui/table';
 
 import data from '../data.json';
 import { useCallback, useState } from 'react';
@@ -6,9 +13,10 @@ import EditableCell from './EditableCell';
 import { Product } from '../types/types';
 import SortButton from './SortButton';
 import Cell from './Cell';
+import FormBlock from './FormBlock/FormBlock';
 
 export default function ProductsTable() {
-  const [tableData, setTableData] = useState(data);
+  const [tableData, setTableData] = useState(data as Product[]);
   const [editedId, setEditedId] = useState<string | null>(null);
   const [sortingOrder, setSortingOrder] = useState<'asc' | 'desc' | null>(null);
   const [sortedField, setSortedField] = useState<keyof Product | null>(null);
@@ -147,40 +155,8 @@ export default function ProductsTable() {
 
   return (
     <>
-      <form action="">
-        <input
-          type="file"
-          name=""
-          id=""
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            if (file.type !== 'application/json') return;
-            const reader = new FileReader();
-            reader.onload = (e: ProgressEvent<FileReader>) => {
-              const jsonData = JSON.parse(e.target?.result as string);
-              setTableData(jsonData);
-            };
-            reader.readAsText(file);
-          }}
-        />
-      </form>
-      <button
-        onClick={() => {
-          const textFile = new Blob([JSON.stringify(tableData, null, 2)], {
-            type: 'text/plain;charset=utf-8',
-          });
+      <FormBlock setTableData={setTableData} tableData={tableData} />
 
-          const href = URL.createObjectURL(textFile);
-          const link = document.createElement('a');
-          link.target = '_blank';
-          link.download = 'data.json';
-          link.href = href;
-          link.click();
-        }}
-      >
-        Экспорт
-      </button>
       <div className="max-w-[1230px] px-5 pt-14 pb-5 bg-white rounded-xl m-auto shadow-sm">
         <Table className="border-separate border-spacing-1.5">
           <TableHeader>
@@ -206,13 +182,22 @@ export default function ProductsTable() {
                 ))}
               </TableRow>
             ))}
-            <TableRow>
-              <Cell colSpan={4}>Итого:</Cell>
-              <Cell>{availableTotal}</Cell>
-              <Cell>{inTransitTotal} </Cell>
-              <Cell>{total}</Cell>
-            </TableRow>
+
+            {tableData.length !== 0 && (
+              <TableRow>
+                <Cell colSpan={4}>Итого:</Cell>
+                <Cell>{availableTotal}</Cell>
+                <Cell>{inTransitTotal} </Cell>
+                <Cell>{total}</Cell>
+              </TableRow>
+            )}
           </TableBody>
+          {tableData.length === 0 && (
+            <TableCaption>
+              Нет данных. Чтобы загрузить данные, нажмите на кнопку "Загрузить
+              данные из csv"
+            </TableCaption>
+          )}
         </Table>
       </div>
     </>
