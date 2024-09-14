@@ -14,11 +14,41 @@ import {
 import { Button } from '../ui/button';
 import { Product } from '../../types/types';
 import { useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../../components/ui/form';
+import * as z from 'zod';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '../ui/input';
 interface FormBlockProps {
   setTableData: React.Dispatch<React.SetStateAction<Product[]>>;
   tableData: Product[];
 }
+
+const formSchema = z
+  .object({
+    barcode: z.string(),
+    category: z.string(),
+    article: z.string(),
+    size: z.coerce.number(),
+  })
+  .refine(
+    (data) => {
+      if (data.barcode || data.article) return true;
+      else return false;
+    },
+    {
+      message: 'Нужно задать баркод или артикул',
+      path: ['barcode'],
+    }
+  );
 
 const exportData = (tableData: Product[]) => () => {
   if (!tableData || tableData.length === 0) return;
@@ -53,100 +83,151 @@ const onFileInput =
     };
     reader.readAsText(file);
   };
+
 export default function FormBlock({ setTableData, tableData }: FormBlockProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      barcode: '',
+      category: 'Джинсы',
+      article: '',
+      size: 0,
+    },
+  });
+
+  const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    console.log(data);
+  };
   return (
-    <form action="" className="">
-      <section className="flex gap-3 mb-3">
-        <div className="bg-white rounded-2xl px-4 py-2 space-x-4 shadow-sm box-content">
-          <label htmlFor="barcode">Баркод</label>
-          <input
-            id="barcode"
-            className="bg-muted-light p-4 rounded-2xl w-40"
-            type="text"
-            placeholder="5643242134323099"
+    <Form {...form}>
+      <form action="" className="" onSubmit={form.handleSubmit(handleSubmit)}>
+        <section className="flex gap-3 mb-3">
+          <FormField
+            name="barcode"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Баркод</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    id="barcode"
+                    type="text"
+                    placeholder="5643242134323099"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <div className="bg-white rounded-2xl px-4 py-2 space-x-4 shadow-sm box-content">
-          <label htmlFor="article">Артикул</label>
-          <input
-            id="article"
-            className="bg-muted-light p-4 rounded-2xl w-44"
-            type="text"
-            placeholder="ДжЖСинМом0823"
+          <FormField
+            name="article"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Артикул</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    className=""
+                    type="text"
+                    placeholder="ДжЖСинМом0823"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <div className="bg-white rounded-2xl px-4 py-2 space-x-4 shadow-sm box-content">
-          <label htmlFor="article">Размер</label>
-          <input
-            id="article"
-            className="bg-muted-light p-4 rounded-2xl w-14 text-center"
-            type="number"
-            placeholder="44"
+          <FormField
+            name="size"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Размер</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    className="w-16 text-center"
+                    type="number"
+                    placeholder="44"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <div className="bg-white rounded-2xl px-4 py-2 shadow-sm box-content">
-          <label className="text-slate-400" htmlFor="article">
-            Категория
-          </label>
 
-          <Select>
-            <SelectTrigger className="space-x-4 w-full p-0">
-              <SelectValue placeholder="Джинсы" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="light">Шорты</SelectItem>
-              <SelectItem value="dark">Рубашка</SelectItem>
-              <SelectItem value="system">Кардиган</SelectItem>
-            </SelectContent>
-          </Select>
+          <FormField
+            name="category"
+            control={form.control}
+            render={() => (
+              <FormItem className="flex-col items-start space-x-0 space-y-2">
+                <FormLabel className="text-slate-400">Категория</FormLabel>
+                <FormControl>
+                  <Select>
+                    <SelectTrigger className="space-x-4 w-full p-0 h-4">
+                      <SelectValue placeholder="Джинсы" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="light">Шорты</SelectItem>
+                      <SelectItem value="dark">Рубашка</SelectItem>
+                      <SelectItem value="system">Кардиган</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+              </FormItem>
+            )}
+          ></FormField>
+        </section>
+        <div className="flex gap-2">
+          <Button variant={'accent'}>Сформировать</Button>
+          <Button
+            type="button"
+            className="space-x-2"
+            onClick={exportData(tableData)}
+          >
+            <FileUpIcon fill="white" stroke="black" size={16} />{' '}
+            <span>Экспорт</span>
+          </Button>
         </div>
-      </section>
-      <div className="flex gap-2">
-        <Button variant={'accent'}>Сформировать</Button>
-        <Button
-          type="button"
-          className="space-x-2"
-          onClick={exportData(tableData)}
-        >
-          <FileUpIcon fill="white" stroke="black" size={16} />{' '}
-          <span>Экспорт</span>
-        </Button>
-      </div>
-      <footer className="flex items-center mt-7 mb-7 border-t-2 border-b-2 border-slate-200">
-        <Button
-          type="button"
-          variant={'ghost'}
-          className="flex gap-2"
-          onClick={() => fileInputRef.current?.click()}
-        >
-          <FolderSymlinkIcon size={18} />
-          <span>Загрузить данные из csv</span>
-        </Button>
+        <footer className="flex items-center mt-7 mb-7 border-t-2 border-b-2 border-slate-200">
+          <Button
+            type="button"
+            variant={'ghost'}
+            className="flex gap-2"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <FolderSymlinkIcon size={18} />
+            <span>Загрузить данные из csv</span>
+          </Button>
 
-        <input
-          ref={fileInputRef}
-          type="file"
-          name=""
-          id=""
-          className="hidden"
-          onChange={onFileInput(setTableData)}
-        />
-        <Button type="button" variant={'ghost'} className="flex gap-2">
-          <FolderPlusIcon size={18} />
-          <span>Изменить данные</span>
-        </Button>
-        <div className="border-r-2 h-6 ml-auto mr-12"></div>
-        <Button
-          type="button"
-          variant={'ghost'}
-          className="space-x-2"
-          onClick={() => setTableData([])}
-        >
-          <span>Очистить</span>
-          <XIcon fill="white" stroke="black" size={16} />
-        </Button>
-      </footer>
-    </form>
+          <input
+            ref={fileInputRef}
+            type="file"
+            name=""
+            id=""
+            className="hidden"
+            onChange={onFileInput(setTableData)}
+          />
+          <Button type="button" variant={'ghost'} className="flex gap-2">
+            <FolderPlusIcon size={18} />
+            <span>Изменить данные</span>
+          </Button>
+          <div className="border-r-2 h-6 ml-auto mr-12"></div>
+          <Button
+            type="button"
+            variant={'ghost'}
+            className="space-x-2"
+            onClick={() => setTableData([])}
+          >
+            <span>Очистить</span>
+            <XIcon fill="white" stroke="black" size={16} />
+          </Button>
+        </footer>
+      </form>
+      <FormMessage />
+    </Form>
   );
 }
