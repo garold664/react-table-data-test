@@ -28,8 +28,8 @@ export default function UserPanel() {
           О нас <ArrowRightIcon size={12} />
         </Button>
       </div>
-      <div className="mt-10 flex items-center gap-6">
-        <h1 className="text-3xl">Остатки сформированы на 01.04.2023 г.</h1>
+      <div className="mt-10 flex items-center gap-6 mb-9">
+        <h1 className="text-3xl ">Остатки сформированы на 01.04.2023 г.</h1>
         <Button className=" flex gap-1 text-sm">
           <NotepadTextIcon size={16} /> Инструкции
         </Button>
