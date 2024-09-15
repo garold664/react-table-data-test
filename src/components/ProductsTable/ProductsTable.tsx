@@ -105,13 +105,13 @@ export default function ProductsTable() {
     return (
       <TableHead className="font-normal">
         <div
-          className={`relative flex items-center gap-2 w-max ${
+          className={`relative flex items-center gap-2 2xl:w-max ${
             children.includes('(заказы и возвраты)') ? 'pb-4' : 'pb-9'
           }`}
         >
           {children.includes('(заказы и возвраты)') ? (
             <div>
-              <div className="flex items-center gap-2 w-max">
+              <div className="flex items-center gap-2">
                 {children.slice(0, '(заказы и возвраты)'.length * -1)}
                 <SortButton
                   sortTableData={sortTableData}

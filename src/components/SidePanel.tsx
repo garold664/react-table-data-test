@@ -7,7 +7,7 @@ import { useState } from 'react';
 export default function SidePanel() {
   const [open, setOpen] = useState(false);
 
-  const panelMobileStyles = 'block fixed left-2 top-2 z-10';
+  const panelMobileStyles = 'block absolute left-0 top-0 p-2 z-10';
   // const buttonMobileStyles = 'left-[420px]';
   return (
     <>
@@ -20,7 +20,7 @@ export default function SidePanel() {
         {open && <XIcon />}
       </Button>
       <aside
-        className={`shrink-0 max-w-full xl:block xl:static xl:w-96 ${
+        className={`shrink-0 max-w-full xl:block xl:static xl:w-96 p-1 overflow-y-auto ${
           open ? panelMobileStyles : 'hidden'
         }`}
       >
