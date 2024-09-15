@@ -133,20 +133,15 @@ export default function FormBlock({ setTableData, tableData }: FormBlockProps) {
           return true;
         const firstSize = Number(product.size.split('-')[0]);
         const lastSize = Number(product.size.split('-')[1]);
-        let isSize = false;
-        if (size === 0) isSize = true;
-        else if (!lastSize) isSize = firstSize === size;
-        else isSize = firstSize <= size && lastSize >= size;
 
-        let isArticle = false;
-        if (article === '') isArticle = true;
-        else isArticle = product.type === article;
-        let isCategory = false;
-        if (category === 'Все') isCategory = true;
-        else isCategory = product.name === category;
-        let isBarcode = false;
-        if (barcode === '') isBarcode = true;
-        else isBarcode = product.barcode === barcode;
+        const isSize =
+          size === 0 ||
+          (!lastSize && firstSize === size) ||
+          (lastSize && firstSize <= size && lastSize >= size);
+        const isArticle = article === '' || product.type === article;
+        const isCategory = category === 'Все' || product.name === category;
+        const isBarcode = barcode === '' || product.barcode === barcode;
+
         return isSize && isArticle && isCategory && isBarcode;
       });
       return newData;
