@@ -15,6 +15,7 @@ import SortButton from './SortButton';
 import Cell from './Cell';
 import FormBlock from '../FormBlock/FormBlock';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
+import { productFieldNames, productFields } from '../../data/data';
 
 export default function ProductsTable() {
   const [tableData, setTableData] = useState(data as Product[]);
@@ -53,7 +54,7 @@ export default function ProductsTable() {
   );
 
   const sortTableData = useCallback(
-    (field: keyof Product) => (e: React.MouseEvent<HTMLButtonElement>) => {
+    (field: keyof Product) => () => {
       setSortedField(field);
       let newSortingOrder: 'asc' | 'desc' | null = null;
       if (!sortingOrder || sortedField !== field) {
@@ -68,7 +69,6 @@ export default function ProductsTable() {
       setFilteredData((data) => {
         if (newSortingOrder === 'asc') {
           return [...data].sort((a, b) => {
-            // if (typeof a[field] === 'number' && typeof b[field] === 'number') {
             if (
               field === 'total' ||
               field === 'available' ||
@@ -158,26 +158,6 @@ export default function ProductsTable() {
         {children}
       </EditableCell>
     );
-  };
-
-  const productFields = [
-    'barcode',
-    'type',
-    'name',
-    'size',
-    'available',
-    'inTransit',
-    'total',
-  ] as const;
-
-  const productFieldNames = {
-    barcode: 'Баркод',
-    type: 'Предмет',
-    name: 'Артикул поставщика',
-    size: 'Размер',
-    available: 'Доступно к заказу',
-    inTransit: 'Товары в пути (заказы и возвраты)',
-    total: 'Итого',
   };
 
   return (
